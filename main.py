@@ -51,7 +51,9 @@ sum_inst = sum(instrumentalness)/100
 
 taste = ['danceability', 'acousticness', 'energy','instrumentalness']
 scale = [sum_danc, sum_acou, sum_ene, sum_inst]
+
 app = dash.Dash()
+
 app.layout = html.Div(children=[
     html.H1(children='Music Investigator',
             style={'textAlign': 'center',
@@ -75,7 +77,9 @@ app.layout = html.Div(children=[
               }
               ),
     html.Br(),
-    html.Div('*This is the conclusion*')
+    html.Div('*This is the conclusion*'),
+
 ])
+
 if __name__ == '__main__':
     app.run_server()
