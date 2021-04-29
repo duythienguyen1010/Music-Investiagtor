@@ -14,20 +14,7 @@ client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secr
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 #create the initial stargraph
-fig = go.Figure(data=go.Scatterpolar(
-  r=[0, 0, 0, 0],
-  theta=['danceability', 'acousticness', 'energy', 'instrumentalness'],
-  fill='toself'
-))
-
-fig.update_layout(
-  polar=dict(
-    radialaxis=dict(
-      visible=False
-    ),
-  ),
-  showlegend=True
-)
+fig = analysis.star_graph(['danceability', 'acousticness', 'energy', 'instrumentalness'], [0, 0, 0, 0])
 
 # Run Dash
 app = dash.Dash()
