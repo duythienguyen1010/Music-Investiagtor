@@ -29,6 +29,11 @@ def generate_elements( x = ''):
     acousticness = []
     energy = []
     instrumentalness = []
+    loudness = []
+    speechiness = []
+    liveness = []
+    valence = []
+    tempo = []
 
     for i in range(0, len(trackIDs)):
         features = sp.audio_features(trackIDs[i])
@@ -36,14 +41,23 @@ def generate_elements( x = ''):
         acousticness.append(features[0]['acousticness'])
         energy.append(features[0]['energy'])
         instrumentalness.append(features[0]['instrumentalness'])
+        speechiness.append(features[0]['speechiness'])
+        liveness.append(features[0]['liveness'])
+        valence.append(features[0]['valence'])
 
-    sum_danc = sum(danceability) / 100
-    sum_acou = sum(acousticness) / 100
-    sum_ene = sum(energy) / 100
-    sum_inst = sum(instrumentalness) / 100
+    #Calculate average features
+    sum_danc = sum(danceability) / total
+    sum_acou = sum(acousticness) / total
+    sum_ene = sum(energy) / total
+    sum_inst = sum(instrumentalness) / total
+    sum_speech = sum(speechiness) / total
+    sum_live = sum(liveness) / total
+    sum_val = sum(valence) / total
 
-    taste = ['danceability', 'acousticness', 'energy', 'instrumentalness']
-    scale = [sum_danc, sum_acou, sum_ene, sum_inst]
+    print(sum_danc, sum_acou, sum_ene, sum_inst, sum_speech, sum_live, sum_val)
+    taste = ['danceability', 'acousticness', 'energy', 'instrumentalness',
+             'speechiness', 'liveness', 'valence']
+    scale = [sum_danc, sum_acou, sum_ene, sum_inst, sum_speech, sum_val]
     return taste, scale
 
 def star_graph(taste = [], scale = []):
@@ -62,3 +76,5 @@ def star_graph(taste = [], scale = []):
         showlegend=True
     )
     return fig
+
+#generate_elements('mh6sdur1otqgq0rhbllwa8k5f')

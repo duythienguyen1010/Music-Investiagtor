@@ -13,8 +13,12 @@ secret = 'a761b0fa42734f5aa5a4182f425558c6'
 client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-#create the initial stargraph
-fig = analysis.star_graph(['danceability', 'acousticness', 'energy', 'instrumentalness'], [0, 0, 0, 0])
+# define features and initialize their value
+init_taste = ['danceability', 'acousticness', 'energy', 'instrumentalness',
+              'speechiness', 'liveness', 'valence']
+init_scale = [0, 0, 0, 0, 0, 0, 0, 0]
+# create the initial stargraph
+fig = analysis.star_graph(init_taste, init_scale)
 
 # Run Dash
 app = dash.Dash()
@@ -31,7 +35,7 @@ app.layout = html.Div(children=[
     html.Br(),
     html.Br(),
 
-    #This part allow us to take input
+    # This part allow us to take input
     html.Div(["ENTER YOUR SPOTIFY ACCOUNT ID: ",
               dcc.Input(id='my-input', value='...text here...', type='text')]),
 
@@ -43,6 +47,7 @@ app.layout = html.Div(children=[
 
 ])
 
+
 @app.callback(
     Output('graph1', 'figure'),
     Input('my-input', 'value')
@@ -51,6 +56,7 @@ def update_output_div(input_value):
     taste, scale = analysis.generate_elements(input_value)
     fig = analysis.star_graph(taste, scale)
     return fig
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
