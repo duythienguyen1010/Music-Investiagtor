@@ -62,7 +62,8 @@ app.layout = html.Div(children=[
 )
 def update_output_div(input_value):
     taste, scale = analysis.generate_elements(input_value)
-    return {'data': [go.Scatterpolar(r=scale, theta=taste, fill= 'toself')]}
+    fig = analysis.star_graph(taste, scale)
+    return fig
 
 if __name__ == '__main__':
     app.run_server(debug=True)

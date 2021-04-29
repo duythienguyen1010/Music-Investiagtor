@@ -45,3 +45,20 @@ def generate_elements( x = ''):
     taste = ['danceability', 'acousticness', 'energy', 'instrumentalness']
     scale = [sum_danc, sum_acou, sum_ene, sum_inst]
     return taste, scale
+
+def star_graph(taste = [], scale = []):
+    fig = go.Figure(data=go.Scatterpolar(
+        r=scale,
+        theta=taste,
+        fill='toself'
+    ))
+
+    fig.update_layout(
+        polar=dict(
+            radialaxis=dict(
+                visible=False
+            ),
+        ),
+        showlegend=True
+    )
+    return fig
