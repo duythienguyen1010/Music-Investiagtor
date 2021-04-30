@@ -6,12 +6,17 @@ import plotly.graph_objs as go
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import analysis
+import base64
 
 # Spotipy Setup
 cid = '3e7b0a3fcfe445a69eea02e4a4ce99b8'
 secret = 'a761b0fa42734f5aa5a4182f425558c6'
 client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+
+# imports picture and reads in base 64 code
+image_filename = 'clef2.png'
+encoded_image = base64.b64encode(open(image_filename, 'rb').read())
 
 # define features and initialize their value
 init_taste = ['danceability', 'acousticness', 'energy', 'instrumentalness',
@@ -23,6 +28,10 @@ fig = analysis.star_graph(init_taste, init_scale)
 # Run Dash
 app = dash.Dash()
 app.layout = html.Div(children=[
+    html.P(children= html.Img(
+        src='data:image/png;base64,{}'.format(encoded_image.decode())),
+        className="header-emoji",
+        style={"textAlign": 'center',}),
     html.H1(children='Music Investigator',
             style={'textAlign': 'center',
                    'color': '#A01FF2'
