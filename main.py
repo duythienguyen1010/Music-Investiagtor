@@ -14,6 +14,13 @@ secret = 'a761b0fa42734f5aa5a4182f425558c6'
 client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
+external_stylesheet = [
+    {
+        "href": 'assets/typography.css',
+        "rel": 'stylesheet'
+    }
+]
+
 # imports picture and reads in base 64 code
 image_filename = 'clef2.png'
 encoded_image = base64.b64encode(open(image_filename, 'rb').read())
@@ -36,16 +43,18 @@ colors = {
 }
 
 # Run Dash
-app = dash.Dash()
+app = dash.Dash(__name__, external_stylesheets=external_stylesheet)
 app.layout = html.Div(
     children=[
         html.Div(
             children=[
+                html.Br(),
                 html.P(children=html.Img(
                     src='data:image/png;base64,{}'.format(encoded_image.decode())),
                     className="header-emoji",
                     style={"textAlign": 'center',
-                           'backgroundColor': colors['background']}),
+                           'backgroundColor': colors['background'],
+                           'height': '54px'}),
                 html.H1(children='Music Investigator',
                         style={'textAlign': 'center',
                                'color': '#A01FF2',
@@ -68,13 +77,14 @@ app.layout = html.Div(
                           dcc.Input(id='my-input', value='...text here...', type='text')],
                          style={'margin-bottom': '24px',
                                 'box-shadow': '0 4px 6px 0 rgba(0, 0, 0, 0.18)',
-                                'color': '#FFFFFF'}),
-            ], style={'height': '260px',
+                                'color': '#FFFFFF',
+                                'textAlign': ''}),
+            ], style={'height': '250px',
                       'backgroundColor': colors['background']}
         ),
         html.Br(),
         html.Hr(style={'color': '#7FDBFF'}),
-        html.Div("This graph represents your music taste"),
+        html.Div("This Graph Represents YOUR Music Taste"),
         dcc.Graph(id='graph1', figure=fig,
                   style={'margin-bottom': '24px',
                          'box-shadow': '0 4px 6px 0 rgba(0, 0, 0, 0.18)',
@@ -82,13 +92,13 @@ app.layout = html.Div(
         html.Br(),
 
         # This part show different countries' tastes
-        html.Div("This graph represents the music taste across different countries"),
+        html.Div("This Graph Represents the Music Taste Across Different Countries"),
         dcc.Graph(id='graph2', figure=fig2),
-        html.Div('Please select a country',
-                 style={'color': '#ef3e18', 'margin': '10px',
+        html.Br(),
+        html.Div('Please Select a Country',
+                 style={'margin': '10px',
                         'margin-bottom': '24px',
                         'box-shadow': '0 4px 6px 0 rgba(0, 0, 0, 0.18)',
-                        'color': '#FFFFFF'
                         }),
         dcc.Dropdown(
             id='select-country',
