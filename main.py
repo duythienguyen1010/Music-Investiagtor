@@ -25,44 +25,103 @@ init_scale = [0, 0, 0, 0, 0, 0, 0, 0]
 # create the initial stargraph
 fig = analysis.star_graph(init_taste, init_scale)
 
+# create popular graph
+popular_taste, popular_scale = analysis.generate_general_taste('US')
+fig2 = analysis.star_graph(popular_taste, popular_scale)
+
+# Background and color scheme pre-coded colors
+colors = {
+    'background': '#333333',
+    'text': '#7FDBFF'
+}
+
 # Run Dash
 app = dash.Dash()
-app.layout = html.Div(children=[
-    html.P(children= html.Img(
-        src='data:image/png;base64,{}'.format(encoded_image.decode())),
-        className="header-emoji",
-        style={"textAlign": 'center',}),
-    html.H1(children='Music Investigator',
-            style={'textAlign': 'center',
-                   'color': '#A01FF2'
-                   }
-            ),
-    html.Div('Web Dashboard for Data Visualization using Python',
-             style={'textAlign': 'center'}),
-    html.Div('Spotify User Information',
-             style={'textAlign': 'center'}),
-    html.Br(),
-    html.Br(),
+app.layout = html.Div(
+    children=[
+        html.Div(
+            children=[
+                html.P(children=html.Img(
+                    src='data:image/png;base64,{}'.format(encoded_image.decode())),
+                    className="header-emoji",
+                    style={"textAlign": 'center',
+                           'backgroundColor': colors['background']}),
+                html.H1(children='Music Investigator',
+                        style={'textAlign': 'center',
+                               'color': '#A01FF2',
+                               'backgroundColor': colors['background']
+                               },
+                        ),
+                html.Div('Web Dashboard for Data Visualization using Python',
+                         style={'textAlign': 'center',
+                                'color': '#FFFFFF',
+                                'backgroundColor': colors['background']}),
+                html.Div('Spotify User Information',
+                         style={'textAlign': 'center',
+                                'color': '#FFFFFF',
+                                'backgroundColor': colors['background']}),
+                html.Br(),
+                html.Br(),
 
-    # This part allow us to take input
-    html.Div(["ENTER YOUR SPOTIFY ACCOUNT ID: ",
-              dcc.Input(id='my-input', value='...text here...', type='text')]),
+                # This part allow us to take input
+                html.Div(["ENTER YOUR SPOTIFY ACCOUNT ID: ",
+                          dcc.Input(id='my-input', value='...text here...', type='text')],
+                         style={'margin-bottom': '24px',
+                                'box-shadow': '0 4px 6px 0 rgba(0, 0, 0, 0.18)',
+                                'color': '#FFFFFF'}),
+            ], style={'height': '260px',
+                      'backgroundColor': colors['background']}
+        ),
+        html.Br(),
+        html.Hr(style={'color': '#7FDBFF'}),
+        html.Div("This graph represents your music taste"),
+        dcc.Graph(id='graph1', figure=fig,
+                  style={'margin-bottom': '24px',
+                         'box-shadow': '0 4px 6px 0 rgba(0, 0, 0, 0.18)',
+                         'color': '#FFFFFF'}),
+        html.Br(),
 
-    html.Br(),
-    html.Hr(style={'color': '#7FDBFF'}),
-    dcc.Graph(id='graph1', figure=fig),
-    html.Br(),
-    html.Div('*This is the conclusion*'),
-
-])
+        # This part show different countries' tastes
+        html.Div("This graph represents the music taste across different countries"),
+        dcc.Graph(id='graph2', figure=fig2),
+        html.Div('Please select a country',
+                 style={'color': '#ef3e18', 'margin': '10px',
+                        'margin-bottom': '24px',
+                        'box-shadow': '0 4px 6px 0 rgba(0, 0, 0, 0.18)',
+                        'color': '#FFFFFF'
+                        }),
+        dcc.Dropdown(
+            id='select-country',
+            options=[
+                {'label': 'United States of America', 'value': 'US'},
+                {'label': 'Andorra', 'value': 'AD'},
+                {'label': 'Australia', 'value': 'AU'},
+                {'label': 'Brazil', 'value': 'BR'},
+                {'label': 'Canada', 'value': 'CA'},
+                {'label': 'Chile', 'value': 'CL'},
+            ],
+            value='USA'
+        ),
+        html.Div('*This is the conclusion*'),
+    ])
 
 
 @app.callback(
     Output('graph1', 'figure'),
     Input('my-input', 'value')
 )
-def update_output_div(input_value):
+def update_graph1(input_value):
     taste, scale = analysis.generate_elements(input_value)
+    fig = analysis.star_graph(taste, scale)
+    return fig
+
+
+@app.callback(
+    Output('graph2', 'figure'),
+    Input('select-country', 'value')
+)
+def update_graph2(country):
+    taste, scale = analysis.generate_general_taste(country)
     fig = analysis.star_graph(taste, scale)
     return fig
 

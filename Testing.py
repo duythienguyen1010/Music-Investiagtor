@@ -35,7 +35,7 @@ app.layout = html.Div(children=[
     html.P(children= html.Img(
         src='data:image/png;base64,{}'.format(encoded_image.decode())),
         className="header-emoji",
-        style={"textAlign": 'center',}),
+        style={"textAlign": 'center'}),
     html.H1(children='Music Investigator',
             style={'textAlign': 'center',
                    'color': '#A01FF2'
