@@ -38,13 +38,14 @@ def generate_elements( x = ''):
 
     for i in range(0, len(trackIDs)):
         features = sp.audio_features(trackIDs[i])
-        danceability.append(features[0]['danceability'])
-        acousticness.append(features[0]['acousticness'])
-        energy.append(features[0]['energy'])
-        instrumentalness.append(features[0]['instrumentalness'])
-        speechiness.append(features[0]['speechiness'])
-        liveness.append(features[0]['liveness'])
-        valence.append(features[0]['valence'])
+        if features != [None]:
+            danceability.append(features[0]['danceability'])
+            acousticness.append(features[0]['acousticness'])
+            energy.append(features[0]['energy'])
+            instrumentalness.append(features[0]['instrumentalness'])
+            speechiness.append(features[0]['speechiness'])
+            liveness.append(features[0]['liveness'])
+            valence.append(features[0]['valence'])
 
     #Calculate average features
     sum_danc = sum(danceability) / total
@@ -87,9 +88,6 @@ def generate_general_taste (country= ''):
     # generate timestamp
     ct = datetime.datetime.utcnow().isoformat()
 
-    # country
-    country = 'US'
-
     # Playlists
     playlistIDs = []
     for i in range(0, 1000, 50):
@@ -117,13 +115,14 @@ def generate_general_taste (country= ''):
 
     for i in range(0, len(trackIDs)):
         features = sp.audio_features(trackIDs[i])
-        danceability.append(features[0]['danceability'])
-        acousticness.append(features[0]['acousticness'])
-        energy.append(features[0]['energy'])
-        instrumentalness.append(features[0]['instrumentalness'])
-        speechiness.append(features[0]['speechiness'])
-        liveness.append(features[0]['liveness'])
-        valence.append(features[0]['valence'])
+        if features != [None]:
+            danceability.append(features[0]['danceability'])
+            acousticness.append(features[0]['acousticness'])
+            energy.append(features[0]['energy'])
+            instrumentalness.append(features[0]['instrumentalness'])
+            speechiness.append(features[0]['speechiness'])
+            liveness.append(features[0]['liveness'])
+            valence.append(features[0]['valence'])
 
     # Calculate average features
     sum_danc = sum(danceability) / total

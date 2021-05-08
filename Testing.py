@@ -26,7 +26,7 @@ init_scale = [0, 0, 0, 0, 0, 0, 0, 0]
 fig = analysis.star_graph(init_taste, init_scale)
 
 #create popular graph
-popular_taste, popular_scale = analysis.generate_general_taste('AR')
+popular_taste, popular_scale = analysis.generate_general_taste('US')
 fig2 = analysis.star_graph(popular_taste, popular_scale)
 
 # Run Dash
@@ -54,9 +54,26 @@ app.layout = html.Div(children=[
 
     html.Br(),
     html.Hr(style={'color': '#7FDBFF'}),
+    html.Div("This graph represents your music taste"),
     dcc.Graph(id='graph1', figure=fig),
     html.Br(),
+
+    # This part show different countries' tastes
+    html.Div("This graph represents the music taste across different countries"),
     dcc.Graph(id='graph2', figure=fig2),
+    html.Div('Please select a country', style={'color': '#ef3e18', 'margin':'10px'}),
+    dcc.Dropdown(
+        id='select-country',
+        options=[
+            {'label': 'United States of America', 'value': 'US'},
+            {'label': 'Andorra', 'value': 'AD'},
+            {'label': 'Australia', 'value': 'AU'},
+            {'label': 'Brazil', 'value': 'BR'},
+            {'label': 'Canada', 'value': 'CA'},
+            {'label': 'Chile', 'value': 'CL'},
+        ],
+        value='USA'
+    ),
     html.Div('*This is the conclusion*'),
 
 ])
@@ -66,8 +83,18 @@ app.layout = html.Div(children=[
     Output('graph1', 'figure'),
     Input('my-input', 'value')
 )
-def update_output_div(input_value):
+def update_graph1(input_value):
     taste, scale = analysis.generate_elements(input_value)
+    fig = analysis.star_graph(taste, scale)
+    return fig
+
+
+@app.callback(
+    Output('graph2', 'figure'),
+    Input('select-country', 'value')
+)
+def update_graph2(country):
+    taste, scale = analysis.generate_general_taste(country)
     fig = analysis.star_graph(taste, scale)
     return fig
 
