@@ -19,8 +19,8 @@ image_filename = 'clef2.png'
 encoded_image = base64.b64encode(open(image_filename, 'rb').read())
 
 # Define features and initialize their values
-init_taste = ['danceability', 'acousticness', 'energy', 'instrumentalness',
-              'speechiness', 'liveness', 'valence']
+init_taste = ['Danceability', 'Acousticness', 'Energy', 'Instrumentalness',
+              'Speechiness', 'Liveness', 'Valence']
 init_scale = [0, 0, 0, 0, 0, 0, 0]
 
 # Create the initial user star graph
@@ -71,7 +71,7 @@ app.layout = html.Div(
 
                 # Allow dashboard to take user input
                 html.Div(["Enter your Spotify Account ID: ",
-                        dcc.Input(id='my-input', value='', type='text')],
+                          dcc.Input(id='my-input', value='', type='text')],
                          style={'margin-bottom': '24px',
                                 'box-shadow': '0 4px 6px 0 rgba(0, 0, 0, 0.18)',
                                 'color': '#FFFFFF',
@@ -85,7 +85,7 @@ app.layout = html.Div(
                 )
             ],
             style={'height': '250px',
-                      'backgroundColor': colors['background']}
+                   'backgroundColor': colors['background']}
         ),
         html.Br(),
         html.Hr(style={'color': '#7FDBFF'}),
@@ -94,10 +94,15 @@ app.layout = html.Div(
         dcc.Graph(id='graph1', figure=fig,
                   style={'margin-bottom': '24px',
                          'box-shadow': '0 4px 6px 0 rgba(0, 0, 0, 0.18)',
-                         'color': '#FFFFFF'}),
+                         'color': '#FFFFFF',
+                         'width': '49%',
+                         'display': 'inline-block'}),
         dcc.Markdown('''
         ### Conclusion: '''),
-        html.Div(id='my-output'),
+        html.Div(id='my-output',
+                 style={'margin-bottom': '24px',
+                        'box-shadow': '0 4px 6px 0 rgba(0, 0, 0, 0.18)'
+                        }),
         html.Br(),
 
         # This part show different countries' tastes
@@ -148,6 +153,7 @@ def update_conclusion(input_value):
     taste, scale, stdevs = analysis.generate_elements(input_value)
     conclusion_string = conclusions.generate_conclusion(taste, scale, stdevs)
     return conclusion_string
+
 
 @app.callback(
     Output('loading', 'children'),
