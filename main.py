@@ -104,7 +104,9 @@ app.layout = html.Div(
             * __Instrumentalness__ predicts whether a playlist contains no vocals. The closer the instrumentalness value is to 1.0, the greater likelihood the playlist contains no vocal content.
             * __Speechiness__ detects the presence of spoken words in a playlist. The more exclusively speech-like the recordings (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value.
             * __Valence__ is a measure from 0.0 to 1.0 describing the musical positiveness conveyed by a playlist. Playlists with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
-            '''),
+            ''', style={'width': '49%',
+                        'display': 'inline-block',
+                        'margin-bottom': '30px'}),
         dcc.Markdown('''
         ### Conclusion: '''),
         html.Div(id='my-output',
