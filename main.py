@@ -98,6 +98,14 @@ app.layout = html.Div(
                          'width': '49%',
                          'display': 'inline-block'}),
         dcc.Markdown('''
+            * __Danceability__ describes how suitable a playlist is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.
+            * __Acousticness__ is a measure from 0.0 to 1.0 of whether the playlist is acoustic.
+            * __Energy__ is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic playlists feel fast, loud, and noisy.
+            * __Instrumentalness__ predicts whether a playlist contains no vocals. The closer the instrumentalness value is to 1.0, the greater likelihood the playlist contains no vocal content.
+            * __Speechiness__ detects the presence of spoken words in a playlist. The more exclusively speech-like the recordings (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value.
+            * __Valence__ is a measure from 0.0 to 1.0 describing the musical positiveness conveyed by a playlist. Playlists with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
+            '''),
+        dcc.Markdown('''
         ### Conclusion: '''),
         html.Div(id='my-output',
                  style={'margin-bottom': '24px',

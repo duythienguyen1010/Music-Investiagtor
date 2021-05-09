@@ -115,8 +115,8 @@ def calculate_from_track_ids(track_ids):
     stdev_live = statistics.stdev(liveness)
     stdev_val = statistics.stdev(valence)
 
-    taste = ['danceability', 'acousticness', 'energy', 'instrumentalness',
-             'speechiness', 'liveness', 'valence']
+    taste = ['Danceability', 'Acousticness', 'Energy', 'Instrumentalness',
+             'Speechiness', 'Liveness', 'Valence']
     scale = [avg_danc, avg_acou, avg_ene, avg_inst, avg_speech, avg_live, avg_val]
     stdevs = [stdev_danc, stdev_acou, stdev_ene, stdev_inst, stdev_speech, stdev_live, stdev_val]
     return taste, scale, stdevs
