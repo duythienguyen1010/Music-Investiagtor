@@ -4,8 +4,8 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import analysis
 import base64
-
 import conclusions
+import time
 
 external_stylesheet = [
     {
@@ -71,25 +71,38 @@ app.layout = html.Div(
 
                 # Allow dashboard to take user input
                 html.Div(["Enter your Spotify Account ID: ",
-                          dcc.Input(id='my-input', value='', type='text')],
+                        dcc.Input(id='my-input', value='', type='text')],
                          style={'margin-bottom': '24px',
                                 'box-shadow': '0 4px 6px 0 rgba(0, 0, 0, 0.18)',
                                 'color': '#FFFFFF',
                                 'textAlign': ''}),
-            ], style={'height': '250px',
+
+                # This part display loading while taking in input
+                dcc.Loading(
+                    id='loading',
+                    type='default',
+                    children=html.Div(html.Div(id='my-input)'))
+                )
+            ],
+            style={'height': '250px',
                       'backgroundColor': colors['background']}
         ),
         html.Br(),
         html.Hr(style={'color': '#7FDBFF'}),
-        html.Div("Your Music Taste: "),
+        dcc.Markdown('''
+                # Your Music Taste: '''),
         dcc.Graph(id='graph1', figure=fig,
                   style={'margin-bottom': '24px',
                          'box-shadow': '0 4px 6px 0 rgba(0, 0, 0, 0.18)',
                          'color': '#FFFFFF'}),
+        dcc.Markdown('''
+        ### Conclusion: '''),
+        html.Div(id='my-output'),
         html.Br(),
 
         # This part show different countries' tastes
-        html.Div("Popular Music Taste In Various Countries: "),
+        dcc.Markdown('''
+        # Popular Music Taste In Various Countries: '''),
         dcc.Graph(id='graph2', figure=fig2),
         html.Br(),
         html.Div('Select a Country',
@@ -109,7 +122,6 @@ app.layout = html.Div(
             ],
             value='US'
         ),
-        html.Div(conclusion_string),
     ])
 
 
@@ -122,9 +134,27 @@ def update_graph1(input_value):
         return analysis.star_graph(init_taste, init_scale)
     taste, scale, stdevs = analysis.generate_elements(input_value)
     fig = analysis.star_graph(taste, scale)
-    global conclusion_string
-    conclusion_string = conclusions.generate_conclusion(taste, scale, stdevs)
     return fig
+
+
+@app.callback(
+    Output('my-output', 'children'),
+    Input('my-input', 'value')
+)
+def update_conclusion(input_value):
+    if input_value == '':
+        return 'Make sure your playlist(s) are public in your spotify account'
+    global conclusion_string
+    taste, scale, stdevs = analysis.generate_elements(input_value)
+    conclusion_string = conclusions.generate_conclusion(taste, scale, stdevs)
+    return conclusion_string
+
+@app.callback(
+    Output('loading', 'children'),
+    Input('my-input', 'value'))
+def input_triggers_spinner(value):
+    if value != '':
+        time.sleep(13)
 
 
 @app.callback(
