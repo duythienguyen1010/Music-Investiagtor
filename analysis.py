@@ -1,4 +1,3 @@
-import pandas as pd
 import plotly.graph_objs as go
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -37,13 +36,13 @@ def generate_general_taste(country=''):
     # Generate timestamp
     ct = datetime.datetime.utcnow().isoformat()
 
-    playlists = sp.featured_playlists(country=country, timestamp=ct, limit=5)
+    playlists = sp.featured_playlists(country=country, timestamp=ct, limit=20)
     playlist_ids = []
     for i in playlists['playlists']['items']:
         playlist_ids.append(i['id'])
     track_ids = []
     for i in playlist_ids:
-        results = sp.playlist_items(playlist_id=i, limit=20)
+        results = sp.playlist_items(playlist_id=i, limit=5)
         tracks = results['items']
         for j in tracks:
             track_ids.append(j['track']['id'])
