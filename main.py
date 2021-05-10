@@ -117,7 +117,7 @@ app.layout = html.Div(
 
         # This part show different countries' tastes
         dcc.Markdown('''
-        # Popular Music Taste In Various Countries: '''),
+        # Featured Music in Various Countries: '''),
         dcc.Graph(id='graph2', figure=fig2),
         html.Br(),
         html.Div('Select a Country',
